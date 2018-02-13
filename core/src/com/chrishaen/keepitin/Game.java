@@ -1,6 +1,7 @@
 package com.chrishaen.keepitin;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -19,7 +20,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-public class Game extends ApplicationAdapter{
+public class Game extends ApplicationAdapter implements ApplicationListener{
 	
 	//	Camera/Rendering
 	private SpriteBatch batch;
@@ -38,7 +39,7 @@ public class Game extends ApplicationAdapter{
 	private World world;
 	Box2DDebugRenderer debugRenderer;
 	
-	//	PlayersbodyPosX Stuff
+	//	Box2d Create Player
 	PolygonShape playerBox;
 	static Body playerBody;
 	static Fixture playerFixture;
@@ -65,8 +66,8 @@ public class Game extends ApplicationAdapter{
 		viewport.apply();
 		camera.position.set(WORLD_WIDTH/2, WORLD_HEIGHT/2, 0);
 		
-		//	Player Texture and Rectangle
-		playerImage = new Texture(Gdx.files.internal("paddle.png"));
+		//	Player Texture and Rectangle TODO round corners on paddle
+		playerImage = new Texture(Gdx.files.internal("Paddle.png"));
 		
 		//	Box2d World with no gravity
 		world = new World(new Vector2(0, 0), true); 
@@ -103,16 +104,11 @@ public class Game extends ApplicationAdapter{
 		
 		//	Render Background
 		ground.draw(batch);
-		//	Render Player
-		/*batch.draw((Texture) playerBody.getUserData(), playerBody.getPosition().x-bodyWidth, playerBody.getPosition().y-bodyHeight,0f,0f, bodyWidth*2, bodyHeight*2, 1, 1, playerBody.getAngle(), 1,1,1,1,false,false);*/
-		batch.draw((Texture) playerBody.getUserData(), playerBody.getPosition().x-bodyWidth, playerBody.getPosition().y-bodyHeight, 7.5f,7.5f, bodyWidth*2f, bodyHeight*2f, 1, 1, ((playerBody.getAngle())*180f)/(float)Math.PI, 0,0,1000,1000, false,false);
-		batch.end();
 		
-		//	Player Screen Bounds
-		/*if(player.x < 0) player.x = 0;
-		if(player.x > WORLD_WIDTH - player.width) player.x = WORLD_WIDTH - player.width;
-		if(player.y < 0) player.y = 0;
-		if(player.y > WORLD_HEIGHT - player.height) player.y = WORLD_HEIGHT - player.height;*/
+		//	Render Player
+		batch.draw((Texture) playerBody.getUserData(), playerBody.getPosition().x-bodyWidth, playerBody.getPosition().y-bodyHeight, 7.5f,7.5f, bodyWidth*2f, bodyHeight*2f, 1, 1, ((playerBody.getAngle())*180f)/(float)Math.PI, 0,0,1000,1000, false,false);
+		
+		batch.end();
 		
 		//	Box2d render update
 		debugRenderer.render(world, camera.combined);

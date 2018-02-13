@@ -1,10 +1,9 @@
 package com.chrishaen.keepitin;
 
-import android.os.Bundle;
-
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
-import com.chrishaen.keepitin.Game;
+
+import android.os.Bundle;
 
 public class AndroidLauncher extends AndroidApplication {
 	@Override
