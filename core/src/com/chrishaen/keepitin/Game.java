@@ -67,7 +67,7 @@ public class Game extends ApplicationAdapter implements ApplicationListener{
 		camera.position.set(WORLD_WIDTH/2, WORLD_HEIGHT/2, 0);
 		
 		//	Player Texture and Rectangle TODO round corners on paddle
-		playerImage = new Texture(Gdx.files.internal("Paddle.png"));
+		playerImage = new Texture(Gdx.files.internal("paddle.png"));
 		
 		//	Box2d World with no gravity
 		world = new World(new Vector2(0, 0), true); 
@@ -96,7 +96,7 @@ public class Game extends ApplicationAdapter implements ApplicationListener{
 		//	Sets input 
 		Gdx.input.setInputProcessor(inputProcessor);
 		
-		Gdx.gl.glClearColor(0.35f, 0.35f, 0.35f, 1);
+		Gdx.gl.glClearColor(0f, 0f, 0f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		camera.update();
 		batch.setProjectionMatrix(camera.combined);
@@ -106,12 +106,12 @@ public class Game extends ApplicationAdapter implements ApplicationListener{
 		ground.draw(batch);
 		
 		//	Render Player
-		batch.draw((Texture) playerBody.getUserData(), playerBody.getPosition().x-bodyWidth, playerBody.getPosition().y-bodyHeight, 7.5f,7.5f, bodyWidth*2f, bodyHeight*2f, 1, 1, ((playerBody.getAngle())*180f)/(float)Math.PI, 0,0,1000,1000, false,false);
+		batch.draw((Texture) playerBody.getUserData(), playerBody.getPosition().x-bodyWidth, playerBody.getPosition().y-bodyHeight, 7.5f,7.5f, bodyWidth*2f, bodyHeight*2f, 1, 1, ((playerBody.getAngle())*180f)/(float)Math.PI, 0,0,3000,3000, false,false);
 		
 		batch.end();
 		
 		//	Box2d render update
-		debugRenderer.render(world, camera.combined);
+		//debugRenderer.render(world, camera.combined);
 		world.step(1/60f, 6, 6);
 	}
 	
