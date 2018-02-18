@@ -13,6 +13,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
@@ -48,6 +49,14 @@ public class Game extends ApplicationAdapter implements ApplicationListener{
 	static float bodyPosX = 9;
 	static float bodyPosY = 16;
 	
+	//	Box2d Create Ball
+	CircleShape ballBox;
+	static Body ballBody;
+	static Fixture ballFixture;
+	float ballRadius = 7.5f;	
+	static float ballPosX = 9;
+	static float ballPosY = 16;
+	
 	//	Creates Input Processor from class
 	MyInputProcessor inputProcessor = new MyInputProcessor();
 	
@@ -66,22 +75,33 @@ public class Game extends ApplicationAdapter implements ApplicationListener{
 		viewport.apply();
 		camera.position.set(WORLD_WIDTH/2, WORLD_HEIGHT/2, 0);
 		
-		//	Player Texture and Rectangle TODO round corners on paddle
-		playerImage = new Texture(Gdx.files.internal("paddle.png"));
-		
 		//	Box2d World with no gravity
-		world = new World(new Vector2(0, 0), true); 
+		world = new World(new Vector2(0, -50), true); 
 		
 		//	Box2d Renderer
 		debugRenderer = new Box2DDebugRenderer();
 		
+		//		Player Texture
+		playerImage = new Texture(Gdx.files.internal("paddle.png"));
+			
 		//	Box2d Body Definition for player
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyType.KinematicBody;
 		bodyDef.position.set(bodyPosX, bodyPosY);
 		
 		playerBox = new PolygonShape();  
-		playerBox.setAsBox(bodyWidth, bodyHeight);
+		//playerBox.setAsBox(bodyWidth, bodyHeight);
+		
+		//	Creating hit box for paddle
+		Vector2[] vertices = new Vector2[7];
+        vertices[0] = new Vector2(-5.6f , -4.75f);
+		vertices[1] = new Vector2(-5.65f , -5f);
+		vertices[2] = new Vector2(-2.55f , -7f);
+		vertices[3] = new Vector2(2.55f , -7f);
+		vertices[4] = new Vector2(5.65f , -5f);
+		vertices[5] = new Vector2(5.6f , -4.75f);
+		vertices[6] = new Vector2(0f , -2f);
+		playerBox.set(vertices);
 		
 		// Box2d create player body 
 		playerBody = world.createBody(bodyDef);
@@ -89,6 +109,21 @@ public class Game extends ApplicationAdapter implements ApplicationListener{
 		fixtureDef.shape = playerBox;
 		playerFixture = playerBody.createFixture(fixtureDef);
 		playerBody.setUserData(playerImage);
+		
+		
+		//	Ball Box2d TODO Make box2d variable names more consistent
+		BodyDef ballDef = new BodyDef();
+		ballDef.type = BodyType.DynamicBody;
+		ballDef.position.set(ballPosX, ballPosY);
+		
+		ballBox = new CircleShape();
+		ballBox.setRadius(1f);
+		
+		ballBody = world.createBody(ballDef);
+		FixtureDef ballFixtureDef = new FixtureDef();
+		ballFixtureDef.shape = ballBox;
+		ballFixture = ballBody.createFixture(ballFixtureDef);
+		//ballBody.setUserData(playerImage);
 	}
 
 	@Override
