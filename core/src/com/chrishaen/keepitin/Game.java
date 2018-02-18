@@ -77,7 +77,7 @@ public class Game extends ApplicationAdapter implements ApplicationListener{
 		
 		//	Box2d Body Definition for player
 		BodyDef bodyDef = new BodyDef();
-		bodyDef.type = BodyType.DynamicBody;
+		bodyDef.type = BodyType.KinematicBody;
 		bodyDef.position.set(bodyPosX, bodyPosY);
 		
 		playerBox = new PolygonShape();  
@@ -111,7 +111,7 @@ public class Game extends ApplicationAdapter implements ApplicationListener{
 		batch.end();
 		
 		//	Box2d render update
-		//debugRenderer.render(world, camera.combined);
+		debugRenderer.render(world, camera.combined);
 		world.step(1/60f, 6, 6);
 	}
 	
