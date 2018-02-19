@@ -10,6 +10,10 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
+import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.physics.box2d.ContactImpulse;
+import com.badlogic.gdx.physics.box2d.ContactListener;
+import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -27,7 +31,11 @@ public class MainMenuScreen implements Screen{
 	
 	FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Organo.ttf"));
 	FreeTypeFontParameter parameter = new FreeTypeFontParameter();
-	BitmapFont font12;
+	BitmapFont font1;
+	
+	FreeTypeFontGenerator generator1 = new FreeTypeFontGenerator(Gdx.files.internal("Organo.ttf"));
+	FreeTypeFontParameter parameter1 = new FreeTypeFontParameter();
+	BitmapFont font2;
 	
 	public MainMenuScreen(final KeepItIn game) {
 		this.game = game;
@@ -42,8 +50,14 @@ public class MainMenuScreen implements Screen{
 		ground.setSize(WORLD_WIDTH , WORLD_HEIGHT);
 		
 		parameter.size = 150;
-		parameter.characters = "KepItn";
-		font12 = generator.generateFont(parameter);
+		parameter.characters = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM";
+		font1 = generator.generateFont(parameter);
+		font1.setColor(0.20f, 0.17f, 0.13f, 1);
+		
+		parameter.size = 65;
+		parameter.characters = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM";
+		font2 = generator.generateFont(parameter);
+		font2.setColor(1f, 1f, 1f, 1);
 	}
 	@Override
 	public void show() {
@@ -60,8 +74,8 @@ public class MainMenuScreen implements Screen{
 		game.batch.begin();
 		ground.draw(game.batch);
 		
-		font12.setColor(0.45f, 0.42f, 0.38f, 1);
-		font12.draw(game.batch, "Keep It In", 75, 1500);
+		font1.draw(game.batch, "Keep It In", 75, 1500);
+		font2.draw(game.batch, "Tap Anywhere to Begin", 70, 900);
 		game.batch.end();
 		
 		if (Gdx.input.isTouched()) {

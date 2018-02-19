@@ -9,14 +9,20 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.physics.box2d.ContactImpulse;
+import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
@@ -28,6 +34,7 @@ public class GameScreen extends Game implements Screen{
 	//	Camera/Rendering
 	SpriteBatch batch;
 	private OrthographicCamera camera;
+	private OrthographicCamera textCamera;
 	private Viewport viewport;
 	BitmapFont font;
 	
@@ -62,12 +69,21 @@ public class GameScreen extends Game implements Screen{
 	static float ballPosY = 16;
 	static float ballVelocity = 12f;
 	
+	//	Current ball velocity
 	Vector2 ballLinearVelocity;
 	
+	//	True When Main Menu Button Is Hit
 	public static boolean goMainMenu = false;
 	
 	//	Creates Input Processor from class
 	MyInputProcessor inputProcessor = new MyInputProcessor();
+	ContactListener contactListener = new MyContactListener();
+	
+	//	Score
+	static int score;
+	FreeTypeFontGenerator generator1 = new FreeTypeFontGenerator(Gdx.files.internal("Organo.ttf"));
+	FreeTypeFontParameter parameter1 = new FreeTypeFontParameter();
+	BitmapFont font1;
 	
 	public GameScreen(final KeepItIn game) {
 		this.game = game;
@@ -79,6 +95,7 @@ public class GameScreen extends Game implements Screen{
 		
 		//	Camera and Viewport Setup, Native aspect ratio is 16:9 otherwise black bars are added
 		camera = new OrthographicCamera();
+		textCamera = new OrthographicCamera(1080,1920);
 		float aspectRatio = (float)Gdx.graphics.getWidth()/(float)Gdx.graphics.getHeight();
 		viewport = new FitViewport(WORLD_WIDTH, WORLD_HEIGHT, camera);
 		viewport.apply();
@@ -168,12 +185,19 @@ public class GameScreen extends Game implements Screen{
 		ballBody.setUserData(ballImage);
 		
 		ballBody.setLinearVelocity(0f, -ballVelocity);
+		score = 0;
+		parameter1.size = 150;
+		parameter1.characters = "0123456789";
+		font1 = generator1.generateFont(parameter1);
+		font1.setColor(0.20f, 0.17f, 0.13f, 1);
 	}
 
 	@Override
 	public void render (float delta) {
 		//	Sets input 
 		Gdx.input.setInputProcessor(inputProcessor);
+		//	Collision Listener
+		world.setContactListener(contactListener);
 		
 		Gdx.gl.glClearColor(0f, 0f, 0f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -187,6 +211,10 @@ public class GameScreen extends Game implements Screen{
 		//	Render Player
 		batch.draw((Texture) playerBody.getUserData(), playerBody.getPosition().x-playerWidth, playerBody.getPosition().y-playerHeight, 7.5f,7.5f, playerWidth*2f, playerHeight*2f, 1, 1, ((playerBody.getAngle())*180f)/(float)Math.PI, 0,0,3000,3000, false,false);
 		batch.draw((Texture) ballBody.getUserData(), ballBody.getPosition().x-ballRadius, ballBody.getPosition().y-ballRadius, ballRadius*2, ballRadius*2);
+		
+		//	Render Score
+		batch.setProjectionMatrix(textCamera.combined);
+		font1.draw(batch, Integer.toString(score), -50, 800);
 		batch.end();
 		
 		//	Maintains Balls Set Velocity 
@@ -208,11 +236,16 @@ public class GameScreen extends Game implements Screen{
 		//debugRenderer.render(world, camera.combined);
 		world.step(1/60f, 6, 6);
 		
+		if(ballBody.getPosition().x > 18 || ballBody.getPosition().x < 0 || ballBody.getPosition().y > 32 || ballBody.getPosition().y < 0) {
+			goMainMenu = true;
+		}
 		if(goMainMenu == true) {
 			goMainMenu = false;
 			game.setScreen(new MainMenuScreen(game));
 			dispose();
 		}
+		
+		System.out.println(score);
 	}
 	
 	@Override
@@ -244,6 +277,5 @@ public class GameScreen extends Game implements Screen{
 		// TODO Auto-generated method stub
 		
 	}
-
 
 }
