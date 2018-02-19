@@ -41,8 +41,8 @@ public class MainMenuScreen implements Screen{
 		ground.setPosition(0, 0);
 		ground.setSize(WORLD_WIDTH , WORLD_HEIGHT);
 		
-		parameter.size = 100;
-		parameter.characters = "HI";
+		parameter.size = 150;
+		parameter.characters = "KepItn";
 		font12 = generator.generateFont(parameter);
 	}
 	@Override
@@ -60,8 +60,8 @@ public class MainMenuScreen implements Screen{
 		game.batch.begin();
 		ground.draw(game.batch);
 		
-		font12.setColor(Color.GRAY);
-		font12.draw(game.batch, "HI", WORLD_WIDTH/2, WORLD_HEIGHT/2);
+		font12.setColor(0.45f, 0.42f, 0.38f, 1);
+		font12.draw(game.batch, "Keep It In", 75, 1500);
 		game.batch.end();
 		
 		if (Gdx.input.isTouched()) {

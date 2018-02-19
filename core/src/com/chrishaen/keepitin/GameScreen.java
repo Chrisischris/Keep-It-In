@@ -60,11 +60,11 @@ public class GameScreen extends Game implements Screen{
 	float ballRadius = 0.5f;	
 	static float ballPosX = 9;
 	static float ballPosY = 16;
-	static float ballVelocity = 10f;
+	static float ballVelocity = 12f;
 	
 	Vector2 ballLinearVelocity;
 	
-	public boolean isRunning = false;
+	public static boolean goMainMenu = false;
 	
 	//	Creates Input Processor from class
 	MyInputProcessor inputProcessor = new MyInputProcessor();
@@ -208,7 +208,8 @@ public class GameScreen extends Game implements Screen{
 		//debugRenderer.render(world, camera.combined);
 		world.step(1/60f, 6, 6);
 		
-		if (Gdx.input.isTouched()) {
+		if(goMainMenu == true) {
+			goMainMenu = false;
 			game.setScreen(new MainMenuScreen(game));
 			dispose();
 		}
@@ -243,5 +244,6 @@ public class GameScreen extends Game implements Screen{
 		// TODO Auto-generated method stub
 		
 	}
+
 
 }
