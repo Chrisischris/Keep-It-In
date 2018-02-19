@@ -5,14 +5,14 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 
 public class MyInputProcessor implements InputProcessor{
-	
+	public static boolean startTouch = false;
 	@Override
 	public boolean keyDown(int keycode) {
 		if(keycode == Input.Keys.D)	{
-			Game.playerBody.setAngularVelocity(5f);
+			GameScreen.playerBody.setAngularVelocity(5f);
 		}	
 		if(keycode == Input.Keys.A) {
-			Game.playerBody.setAngularVelocity(-5f);
+			GameScreen.playerBody.setAngularVelocity(-5f);
 		}
 		return false;
 	}
@@ -20,10 +20,10 @@ public class MyInputProcessor implements InputProcessor{
 	@Override
 	public boolean keyUp(int keycode) {
 		if(keycode == Input.Keys.D) {
-			Game.playerBody.setAngularVelocity(0f);
+			GameScreen.playerBody.setAngularVelocity(0f);
 		}
 		if(keycode == Input.Keys.A) {
-			Game.playerBody.setAngularVelocity(0f);
+			GameScreen.playerBody.setAngularVelocity(0f);
 		}
 		return false;
 	}
@@ -37,21 +37,22 @@ public class MyInputProcessor implements InputProcessor{
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		if(screenX > Gdx.graphics.getWidth()/2) {
-			Game.playerBody.setAngularVelocity(5f);
+			GameScreen.playerBody.setAngularVelocity(5f);
 		}
 		if(screenX < Gdx.graphics.getWidth()/2) {
-			Game.playerBody.setAngularVelocity(-5f);
+			GameScreen.playerBody.setAngularVelocity(-5f);
 		}
+		startTouch = true;
 		return false;
 	}
 
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 		if(screenX > Gdx.graphics.getWidth()/2) {
-			Game.playerBody.setAngularVelocity(0f);
+			GameScreen.playerBody.setAngularVelocity(0f);
 		}
 		if(screenX < Gdx.graphics.getWidth()/2) {
-			Game.playerBody.setAngularVelocity(0f);
+			GameScreen.playerBody.setAngularVelocity(0f);
 		}
 		return false;
 	}

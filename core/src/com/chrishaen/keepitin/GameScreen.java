@@ -1,11 +1,12 @@
 package com.chrishaen.keepitin;
 
-import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.ApplicationListener;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -22,12 +23,13 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-public class Game extends ApplicationAdapter implements ApplicationListener{
-	
+public class GameScreen extends Game implements Screen{
+	final KeepItIn game;
 	//	Camera/Rendering
-	private SpriteBatch batch;
+	SpriteBatch batch;
 	private OrthographicCamera camera;
 	private Viewport viewport;
+	BitmapFont font;
 	
 	//	World Dimensions
 	final float WORLD_WIDTH = 18;
@@ -58,12 +60,17 @@ public class Game extends ApplicationAdapter implements ApplicationListener{
 	float ballRadius = 0.5f;	
 	static float ballPosX = 9;
 	static float ballPosY = 16;
+	static float ballVelocity = 10f;
+	
+	Vector2 ballLinearVelocity;
+	
+	public boolean isRunning = false;
 	
 	//	Creates Input Processor from class
 	MyInputProcessor inputProcessor = new MyInputProcessor();
 	
-	@Override
-	public void create () {
+	public GameScreen(final KeepItIn game) {
+		this.game = game;
 		//	Background Setup
 		batch = new SpriteBatch();
 		ground = new Sprite(new Texture(Gdx.files.internal("testBackground.png")));
@@ -160,11 +167,11 @@ public class Game extends ApplicationAdapter implements ApplicationListener{
 		ballFixture = ballBody.createFixture(ballFixtureDef);
 		ballBody.setUserData(ballImage);
 		
-		ballBody.setLinearVelocity(0f, -10f);
+		ballBody.setLinearVelocity(0f, -ballVelocity);
 	}
 
 	@Override
-	public void render () {
+	public void render (float delta) {
 		//	Sets input 
 		Gdx.input.setInputProcessor(inputProcessor);
 		
@@ -182,6 +189,21 @@ public class Game extends ApplicationAdapter implements ApplicationListener{
 		batch.draw((Texture) ballBody.getUserData(), ballBody.getPosition().x-ballRadius, ballBody.getPosition().y-ballRadius, ballRadius*2, ballRadius*2);
 		batch.end();
 		
+		//	Maintains Balls Set Velocity 
+		ballLinearVelocity = ballBody.getLinearVelocity();
+		if (Math.sqrt(Math.pow(ballLinearVelocity.x, 2) + Math.pow(ballLinearVelocity.y, 2)) != ballVelocity) {
+			float theta = (float) Math.atan(Math.abs(ballLinearVelocity.y)/Math.abs(ballLinearVelocity.x));
+			float x = (float) (ballVelocity * Math.cos(theta));
+			float y = (float) (ballVelocity * Math.sin(theta));
+			if (ballLinearVelocity.x < 0) {
+				x = -x;
+			}
+			if (ballLinearVelocity.y < 0) {
+				y = -y;
+			}
+			ballBody.setLinearVelocity(x, y);
+		}
+		
 		//	Box2d render update
 		//debugRenderer.render(world, camera.combined);
 		world.step(1/60f, 6, 6);
@@ -197,6 +219,24 @@ public class Game extends ApplicationAdapter implements ApplicationListener{
 	@Override
 	public void dispose () {
 		batch.dispose();
+	}
+
+	@Override
+	public void show() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void hide() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void create() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
