@@ -77,7 +77,7 @@ public class Game extends ApplicationAdapter implements ApplicationListener{
 		camera.position.set(WORLD_WIDTH/2, WORLD_HEIGHT/2, 0);
 		
 		//	Box2d World with no gravity
-		world = new World(new Vector2(0, -50), true); 
+		world = new World(new Vector2(0, -10), true); 
 		
 		//	Box2d Renderer
 		debugRenderer = new Box2DDebugRenderer();
@@ -111,11 +111,51 @@ public class Game extends ApplicationAdapter implements ApplicationListener{
 		Array<Vector2> vertices = new Array<Vector2>();
 		vertices.add(new Vector2(-5.6f, -4.75f));
 		vertices.add(new Vector2(-5.65f, -5f));
-		vertices.add(new Vector2(-2.55f, -7f));
-		vertices.add(new Vector2(2.55f, -7f));
+		vertices.add(new Vector2(-2.55f, -7.5f));
+		vertices.add(new Vector2(2.55f, -7.5f));
 		vertices.add(new Vector2(5.65f, -5f));
 		vertices.add(new Vector2(5.6f, -4.75f));
-		vertices.add(new Vector2(0f, -6f));
+		//	Top
+		vertices.add(new Vector2(5.3f, -4.7f));
+		vertices.add(new Vector2(5f, -5f));
+		vertices.add(new Vector2(4.7f, -5.3f));
+		vertices.add(new Vector2(4.4f, -5.59f));
+		vertices.add(new Vector2(4.1f, -5.8f));
+		vertices.add(new Vector2(3.8f, -6f));
+		vertices.add(new Vector2(3.5f, -6.15f));
+		vertices.add(new Vector2(3.2f, -6.3f));
+		vertices.add(new Vector2(2.9f, -6.45f));
+		vertices.add(new Vector2(2.6f, -6.6f));
+		vertices.add(new Vector2(2.3f, -6.75f));
+		vertices.add(new Vector2(2f, -6.83f));
+		vertices.add(new Vector2(1.7f, -6.9f));
+		vertices.add(new Vector2(1.4f, -6.98f));
+		vertices.add(new Vector2(1.1f, -7.02f));
+		vertices.add(new Vector2(0.8f, -7.08f));
+		vertices.add(new Vector2(0.5f, -7.09f));
+		vertices.add(new Vector2(0.2f, -7.09f));
+		
+		vertices.add(new Vector2(0f, -7.1f));
+		
+		vertices.add(new Vector2(-0.2f, -7.09f));
+		vertices.add(new Vector2(-0.5f, -7.09f));
+		vertices.add(new Vector2(-0.8f, -7.08f));
+		vertices.add(new Vector2(-1.1f, -7.02f));
+		vertices.add(new Vector2(-1.4f, -6.98f));
+		vertices.add(new Vector2(-1.7f, -6.9f));
+		vertices.add(new Vector2(-2f, -6.83f));
+		vertices.add(new Vector2(-2.3f, -6.75f));
+		vertices.add(new Vector2(-2.6f, -6.6f));
+		vertices.add(new Vector2(-2.9f, -6.45f));
+		vertices.add(new Vector2(-3.2f, -6.3f));
+		vertices.add(new Vector2(-3.5f, -6.15f));
+		vertices.add(new Vector2(-3.8f, -6f));
+		vertices.add(new Vector2(-4.1f, -5.8f));
+		vertices.add(new Vector2(-4.4f, -5.59f));
+		vertices.add(new Vector2(-4.7f, -5.3f));
+		vertices.add(new Vector2(-5f, -5f));
+		vertices.add(new Vector2(-5.3f, -4.7f));
+		
 		Box2DSeparator.separate(playerBody, fixtureDef, vertices, 30f);
 		
 		
