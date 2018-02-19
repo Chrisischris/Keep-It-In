@@ -207,6 +207,11 @@ public class GameScreen extends Game implements Screen{
 		//	Box2d render update
 		//debugRenderer.render(world, camera.combined);
 		world.step(1/60f, 6, 6);
+		
+		if (Gdx.input.isTouched()) {
+			game.setScreen(new MainMenuScreen(game));
+			dispose();
+		}
 	}
 	
 	@Override

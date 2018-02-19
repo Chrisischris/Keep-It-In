@@ -2,8 +2,14 @@ package com.chrishaen.keepitin;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -15,8 +21,13 @@ public class MainMenuScreen implements Screen{
 	private Viewport viewport;
 	
 	//	World Dimensions
-	final float WORLD_WIDTH = 18;
-	final float WORLD_HEIGHT = 32;
+	final float WORLD_WIDTH = 1080;
+	final float WORLD_HEIGHT = 1920;
+	Sprite ground;
+	
+	FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Organo.ttf"));
+	FreeTypeFontParameter parameter = new FreeTypeFontParameter();
+	BitmapFont font12;
 	
 	public MainMenuScreen(final KeepItIn game) {
 		this.game = game;
@@ -25,7 +36,14 @@ public class MainMenuScreen implements Screen{
 		viewport = new FitViewport(WORLD_WIDTH, WORLD_HEIGHT, camera);
 		viewport.apply();
 		camera.position.set(WORLD_WIDTH/2, WORLD_HEIGHT/2, 0);
-
+		
+		ground = new Sprite(new Texture(Gdx.files.internal("testBackground.png")));
+		ground.setPosition(0, 0);
+		ground.setSize(WORLD_WIDTH , WORLD_HEIGHT);
+		
+		parameter.size = 100;
+		parameter.characters = "HI";
+		font12 = generator.generateFont(parameter);
 	}
 	@Override
 	public void show() {
@@ -35,13 +53,15 @@ public class MainMenuScreen implements Screen{
 
 	@Override
 	public void render(float delta) {
-		Gdx.gl.glClearColor(0, 0, 0.2f, 1);
+		Gdx.gl.glClearColor(0f, 0f, 0f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		camera.update();
 		game.batch.setProjectionMatrix(camera.combined);
 		game.batch.begin();
-		game.font.draw(game.batch, "Welcome to Drop!!! ", 100, 150);
-		game.font.draw(game.batch, "Tap anywhere to begin!", 100, 100);
+		ground.draw(game.batch);
+		
+		font12.setColor(Color.GRAY);
+		font12.draw(game.batch, "HI", WORLD_WIDTH/2, WORLD_HEIGHT/2);
 		game.batch.end();
 		
 		if (Gdx.input.isTouched()) {
@@ -52,8 +72,9 @@ public class MainMenuScreen implements Screen{
 
 	@Override
 	public void resize(int width, int height) {
-		// TODO Auto-generated method stub
-		
+		//Windows Resize Update
+		viewport.update(width, height);
+		camera.position.set(WORLD_WIDTH/2, WORLD_HEIGHT/2, 0);
 	}
 
 	@Override
@@ -76,7 +97,7 @@ public class MainMenuScreen implements Screen{
 
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
+		generator.dispose(); 
 		
 	}
 
