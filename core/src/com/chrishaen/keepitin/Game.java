@@ -36,6 +36,7 @@ public class Game extends ApplicationAdapter implements ApplicationListener{
 	//	Assets
 	Sprite ground;
 	private Texture playerImage;
+	private Texture ballImage;
 	
 	// Box 2d world object and renderer
 	private World world;
@@ -54,7 +55,7 @@ public class Game extends ApplicationAdapter implements ApplicationListener{
 	CircleShape ballBox;
 	static Body ballBody;
 	static Fixture ballFixture;
-	float ballRadius = 7.5f;	
+	float ballRadius = 0.5f;	
 	static float ballPosX = 9;
 	static float ballPosY = 16;
 	
@@ -77,7 +78,7 @@ public class Game extends ApplicationAdapter implements ApplicationListener{
 		camera.position.set(WORLD_WIDTH/2, WORLD_HEIGHT/2, 0);
 		
 		//	Box2d World with no gravity
-		world = new World(new Vector2(0, -10), true); 
+		world = new World(new Vector2(0, 0), true); 
 		
 		//	Box2d Renderer
 		debugRenderer = new Box2DDebugRenderer();
@@ -87,28 +88,14 @@ public class Game extends ApplicationAdapter implements ApplicationListener{
 		//	Box2d Body Definition for player
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyType.KinematicBody;
-		bodyDef.position.set(playerPosX, playerPosY);
-		
-		//	OLD HITBOX CODECreating hit box for paddle
-		//playerBox = new PolygonShape();  
-		/*Vector2[] vertices = new Vector2[7];
-        vertices[0] = new Vector2(-5.6f, -4.75f);
-		vertices[1] = new Vector2(-5.65f, -5f);
-		vertices[2] = new Vector2(-2.55f, -7f);
-		vertices[3] = new Vector2(2.55f, -7f);
-		vertices[4] = new Vector2(5.65f, -5f);
-		vertices[5] = new Vector2(5.6f, -4.75f);
-		vertices[6] = new Vector2(0f, -2f);*/
-		//playerBox.set(vertices);
-		// Box2d create player body 
-		//fixtureDef.shape = playerBox;
-		//playerFixture = playerBody.createFixture(fixtureDef);
-		
+		bodyDef.position.set(playerPosX, playerPosY);		
 		playerBody = world.createBody(bodyDef);
 		FixtureDef fixtureDef = new FixtureDef();
+		fixtureDef.friction = 0f;
 		playerBody.setUserData(playerImage);
 		
 		Array<Vector2> vertices = new Array<Vector2>();
+		//	Bottom
 		vertices.add(new Vector2(-5.6f, -4.75f));
 		vertices.add(new Vector2(-5.65f, -5f));
 		vertices.add(new Vector2(-2.55f, -7.5f));
@@ -134,9 +121,8 @@ public class Game extends ApplicationAdapter implements ApplicationListener{
 		vertices.add(new Vector2(0.8f, -7.08f));
 		vertices.add(new Vector2(0.5f, -7.09f));
 		vertices.add(new Vector2(0.2f, -7.09f));
-		
+		//	Center Point
 		vertices.add(new Vector2(0f, -7.1f));
-		
 		vertices.add(new Vector2(-0.2f, -7.09f));
 		vertices.add(new Vector2(-0.5f, -7.09f));
 		vertices.add(new Vector2(-0.8f, -7.08f));
@@ -155,21 +141,26 @@ public class Game extends ApplicationAdapter implements ApplicationListener{
 		vertices.add(new Vector2(-4.7f, -5.3f));
 		vertices.add(new Vector2(-5f, -5f));
 		vertices.add(new Vector2(-5.3f, -4.7f));
-		
+		//	Converts Concave Shapes to Convex
 		Box2DSeparator.separate(playerBody, fixtureDef, vertices, 30f);
 		
-		
+		//	Ball Texture
+		ballImage = new Texture(Gdx.files.internal("ball.png"));
 		//	Ball Box2d
 		BodyDef ballDef = new BodyDef();
 		ballDef.type = BodyType.DynamicBody;
 		ballDef.position.set(ballPosX, ballPosY);
 		ballBox = new CircleShape();
-		ballBox.setRadius(1f);
+		ballBox.setRadius(ballRadius);
 		ballBody = world.createBody(ballDef);
 		FixtureDef ballFixtureDef = new FixtureDef();
+		ballFixtureDef.restitution = 1f;
+		ballFixtureDef.friction = 0f;
 		ballFixtureDef.shape = ballBox;
 		ballFixture = ballBody.createFixture(ballFixtureDef);
-		//ballBody.setUserData(playerImage);
+		ballBody.setUserData(ballImage);
+		
+		ballBody.setLinearVelocity(0f, -10f);
 	}
 
 	@Override
@@ -188,11 +179,11 @@ public class Game extends ApplicationAdapter implements ApplicationListener{
 		
 		//	Render Player
 		batch.draw((Texture) playerBody.getUserData(), playerBody.getPosition().x-playerWidth, playerBody.getPosition().y-playerHeight, 7.5f,7.5f, playerWidth*2f, playerHeight*2f, 1, 1, ((playerBody.getAngle())*180f)/(float)Math.PI, 0,0,3000,3000, false,false);
-		
+		batch.draw((Texture) ballBody.getUserData(), ballBody.getPosition().x-ballRadius, ballBody.getPosition().y-ballRadius, ballRadius*2, ballRadius*2);
 		batch.end();
 		
 		//	Box2d render update
-		debugRenderer.render(world, camera.combined);
+		//debugRenderer.render(world, camera.combined);
 		world.step(1/60f, 6, 6);
 	}
 	
