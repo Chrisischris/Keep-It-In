@@ -18,6 +18,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -44,10 +45,10 @@ public class Game extends ApplicationAdapter implements ApplicationListener{
 	PolygonShape playerBox;
 	static Body playerBody;
 	static Fixture playerFixture;
-	float bodyWidth = 7.5f;
-	float bodyHeight = 7.5f;	
-	static float bodyPosX = 9;
-	static float bodyPosY = 16;
+	float playerWidth = 7.5f;
+	float playerHeight = 7.5f;	
+	static float playerPosX = 9;
+	static float playerPosY = 16;
 	
 	//	Box2d Create Ball
 	CircleShape ballBox;
@@ -81,44 +82,49 @@ public class Game extends ApplicationAdapter implements ApplicationListener{
 		//	Box2d Renderer
 		debugRenderer = new Box2DDebugRenderer();
 		
-		//		Player Texture
+		//	Player Texture
 		playerImage = new Texture(Gdx.files.internal("paddle.png"));
-			
 		//	Box2d Body Definition for player
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyType.KinematicBody;
-		bodyDef.position.set(bodyPosX, bodyPosY);
+		bodyDef.position.set(playerPosX, playerPosY);
 		
-		playerBox = new PolygonShape();  
-		//playerBox.setAsBox(bodyWidth, bodyHeight);
-		
-		//	Creating hit box for paddle
-		Vector2[] vertices = new Vector2[7];
-        vertices[0] = new Vector2(-5.6f , -4.75f);
-		vertices[1] = new Vector2(-5.65f , -5f);
-		vertices[2] = new Vector2(-2.55f , -7f);
-		vertices[3] = new Vector2(2.55f , -7f);
-		vertices[4] = new Vector2(5.65f , -5f);
-		vertices[5] = new Vector2(5.6f , -4.75f);
-		vertices[6] = new Vector2(0f , -2f);
-		playerBox.set(vertices);
-		
+		//	OLD HITBOX CODECreating hit box for paddle
+		//playerBox = new PolygonShape();  
+		/*Vector2[] vertices = new Vector2[7];
+        vertices[0] = new Vector2(-5.6f, -4.75f);
+		vertices[1] = new Vector2(-5.65f, -5f);
+		vertices[2] = new Vector2(-2.55f, -7f);
+		vertices[3] = new Vector2(2.55f, -7f);
+		vertices[4] = new Vector2(5.65f, -5f);
+		vertices[5] = new Vector2(5.6f, -4.75f);
+		vertices[6] = new Vector2(0f, -2f);*/
+		//playerBox.set(vertices);
 		// Box2d create player body 
+		//fixtureDef.shape = playerBox;
+		//playerFixture = playerBody.createFixture(fixtureDef);
+		
 		playerBody = world.createBody(bodyDef);
 		FixtureDef fixtureDef = new FixtureDef();
-		fixtureDef.shape = playerBox;
-		playerFixture = playerBody.createFixture(fixtureDef);
 		playerBody.setUserData(playerImage);
 		
+		Array<Vector2> vertices = new Array<Vector2>();
+		vertices.add(new Vector2(-5.6f, -4.75f));
+		vertices.add(new Vector2(-5.65f, -5f));
+		vertices.add(new Vector2(-2.55f, -7f));
+		vertices.add(new Vector2(2.55f, -7f));
+		vertices.add(new Vector2(5.65f, -5f));
+		vertices.add(new Vector2(5.6f, -4.75f));
+		vertices.add(new Vector2(0f, -6f));
+		Box2DSeparator.separate(playerBody, fixtureDef, vertices, 30f);
 		
-		//	Ball Box2d TODO Make box2d variable names more consistent
+		
+		//	Ball Box2d
 		BodyDef ballDef = new BodyDef();
 		ballDef.type = BodyType.DynamicBody;
 		ballDef.position.set(ballPosX, ballPosY);
-		
 		ballBox = new CircleShape();
 		ballBox.setRadius(1f);
-		
 		ballBody = world.createBody(ballDef);
 		FixtureDef ballFixtureDef = new FixtureDef();
 		ballFixtureDef.shape = ballBox;
@@ -141,7 +147,7 @@ public class Game extends ApplicationAdapter implements ApplicationListener{
 		ground.draw(batch);
 		
 		//	Render Player
-		batch.draw((Texture) playerBody.getUserData(), playerBody.getPosition().x-bodyWidth, playerBody.getPosition().y-bodyHeight, 7.5f,7.5f, bodyWidth*2f, bodyHeight*2f, 1, 1, ((playerBody.getAngle())*180f)/(float)Math.PI, 0,0,3000,3000, false,false);
+		batch.draw((Texture) playerBody.getUserData(), playerBody.getPosition().x-playerWidth, playerBody.getPosition().y-playerHeight, 7.5f,7.5f, playerWidth*2f, playerHeight*2f, 1, 1, ((playerBody.getAngle())*180f)/(float)Math.PI, 0,0,3000,3000, false,false);
 		
 		batch.end();
 		
