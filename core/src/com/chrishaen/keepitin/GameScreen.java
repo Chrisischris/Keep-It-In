@@ -105,7 +105,7 @@ public class GameScreen extends Game implements Screen{
 		debugRenderer = new Box2DDebugRenderer();
 		
 		//	Player Texture
-		playerImage = new Texture(Gdx.files.internal("paddle.png"));
+		playerImage = new Texture(Gdx.files.internal("Paddle.png"));
 		//	Box2d Body Definition for player
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyType.KinematicBody;
