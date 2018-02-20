@@ -79,6 +79,7 @@ public class GameScreen extends Game implements Screen{
 	
 	//	Score
 	static int score;
+	int lastIncrement = 0;
 	static Preferences prefs = Gdx.app.getPreferences("My Preferences");
 	
 	FreeTypeFontGenerator generator1 = new FreeTypeFontGenerator(Gdx.files.internal("Organo.ttf"));
@@ -216,6 +217,12 @@ public class GameScreen extends Game implements Screen{
 		batch.setProjectionMatrix(textCamera.combined);
 		font1.draw(batch, Integer.toString(score), -70, 800);
 		batch.end();
+		
+		//	Increase ball speed
+		if (score - lastIncrement == 10) {
+			lastIncrement = score;
+			ballVelocity += 0.5;
+		}
 		
 		//	Maintains Balls Set Velocity 
 		ballLinearVelocity = ballBody.getLinearVelocity();
