@@ -17,12 +17,9 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.CircleShape;
-import com.badlogic.gdx.physics.box2d.Contact;
-import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
@@ -96,7 +93,7 @@ public class GameScreen extends Game implements Screen{
 		//	Camera and Viewport Setup, Native aspect ratio is 16:9 otherwise black bars are added
 		camera = new OrthographicCamera();
 		textCamera = new OrthographicCamera(1080,1920);
-		float aspectRatio = (float)Gdx.graphics.getWidth()/(float)Gdx.graphics.getHeight();
+		//float aspectRatio = (float)Gdx.graphics.getWidth()/(float)Gdx.graphics.getHeight();
 		viewport = new FitViewport(WORLD_WIDTH, WORLD_HEIGHT, camera);
 		viewport.apply();
 		camera.position.set(WORLD_WIDTH/2, WORLD_HEIGHT/2, 0);
