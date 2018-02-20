@@ -1,5 +1,6 @@
 package com.chrishaen.keepitin;
 
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -78,6 +79,8 @@ public class GameScreen extends Game implements Screen{
 	
 	//	Score
 	static int score;
+	static Preferences prefs = Gdx.app.getPreferences("My Preferences");
+	
 	FreeTypeFontGenerator generator1 = new FreeTypeFontGenerator(Gdx.files.internal("Organo.ttf"));
 	FreeTypeFontParameter parameter1 = new FreeTypeFontParameter();
 	BitmapFont font1;
@@ -237,6 +240,10 @@ public class GameScreen extends Game implements Screen{
 			goMainMenu = true;
 		}
 		if(goMainMenu == true) {
+			if(score > prefs.getInteger("highScore", 0)) {
+				prefs.putInteger("highScore", score);
+				prefs.flush();
+			}
 			goMainMenu = false;
 			game.setScreen(new MainMenuScreen(game));
 			dispose();

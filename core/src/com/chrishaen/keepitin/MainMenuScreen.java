@@ -43,6 +43,8 @@ public class MainMenuScreen implements Screen{
     private TextureRegionDrawable myTexRegionDrawable;
     private ImageButton button;
 	
+    int highScore = GameScreen.prefs.getInteger("highScore", 0);
+    
 	public MainMenuScreen(final KeepItIn game) {
 		this.game = game;
 
@@ -61,7 +63,7 @@ public class MainMenuScreen implements Screen{
 		font1.setColor(0.20f, 0.17f, 0.13f, 1);
 		
 		parameter.size = 65;
-		parameter.characters = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM";
+		parameter.characters = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890:";
 		font2 = generator.generateFont(parameter);
 		font2.setColor(1f, 1f, 1f, 1);
 		
@@ -76,7 +78,12 @@ public class MainMenuScreen implements Screen{
         Gdx.input.setInputProcessor(stage); //Start taking input from the ui
         stage.addActor(button);
         button.setSize (300, 169);
-        button.setPosition(390, 860);
+        button.setPosition(390, 700);
+        
+        //	Reset Highscore
+        //GameScreen.prefs.putInteger("highScore", 0);
+        //highScore = GameScreen.prefs.getInteger("highScore", 0);
+        //GameScreen.prefs.flush();
 	}
 	@Override
 	public void show() {
@@ -94,12 +101,13 @@ public class MainMenuScreen implements Screen{
 		ground.draw(game.batch);
 		
 		font1.draw(game.batch, "Keep It In", 75, 1500);
-		font2.draw(game.batch, "Tap Anywhere to Begin", 70, 900);
+		
+		font2.draw(game.batch, "Highscore: " + Integer.toString(highScore), 325, 1100);
+		
+		game.batch.end();
 		
 		stage.act(Gdx.graphics.getDeltaTime());
 		stage.draw();
-		
-		game.batch.end();
 		
 		if (button.isPressed()) {
 			game.setScreen(new GameScreen(game));
