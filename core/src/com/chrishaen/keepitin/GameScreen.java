@@ -219,7 +219,7 @@ public class GameScreen extends Game implements Screen{
 		batch.end();
 		
 		//	Increase ball speed
-		if (score - lastIncrement == 10) {
+		if (score - lastIncrement == 5) {
 			lastIncrement = score;
 			ballVelocity += 0.5;
 		}
