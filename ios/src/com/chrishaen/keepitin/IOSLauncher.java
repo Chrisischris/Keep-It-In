@@ -9,6 +9,7 @@ import com.badlogic.gdx.backends.iosrobovm.IOSApplicationConfiguration;
 public class IOSLauncher extends IOSApplication.Delegate {
     @Override
     protected IOSApplication createApplication() {
+    	GADMobileAds.disableSDKCrashReporting();
         IOSApplicationConfiguration config = new IOSApplicationConfiguration();
         return new IOSApplication(new KeepItIn(), config);
     }
