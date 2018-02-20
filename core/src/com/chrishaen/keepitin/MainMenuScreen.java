@@ -7,8 +7,12 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -32,6 +36,13 @@ public class MainMenuScreen implements Screen{
 	FreeTypeFontParameter parameter1 = new FreeTypeFontParameter();
 	BitmapFont font2;
 	
+	//	Play Button
+	private Stage stage;
+    private Texture myTexture;
+    private TextureRegion myTextureRegion;
+    private TextureRegionDrawable myTexRegionDrawable;
+    private ImageButton button;
+	
 	public MainMenuScreen(final KeepItIn game) {
 		this.game = game;
 
@@ -53,6 +64,19 @@ public class MainMenuScreen implements Screen{
 		parameter.characters = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM";
 		font2 = generator.generateFont(parameter);
 		font2.setColor(1f, 1f, 1f, 1);
+		
+		//	Play Button
+		myTexture = new Texture(Gdx.files.internal("play.png"));
+        myTextureRegion = new TextureRegion(myTexture);
+        myTexRegionDrawable = new TextureRegionDrawable(myTextureRegion);
+        button = new ImageButton(myTexRegionDrawable); //Set the button up
+
+        stage = new Stage(viewport); //Set up a stage for the ui
+        stage.addActor(button); //Add the button to the stage to perform rendering and take input.
+        Gdx.input.setInputProcessor(stage); //Start taking input from the ui
+        stage.addActor(button);
+        button.setSize (300, 169);
+        button.setPosition(390, 860);
 	}
 	@Override
 	public void show() {
@@ -71,9 +95,13 @@ public class MainMenuScreen implements Screen{
 		
 		font1.draw(game.batch, "Keep It In", 75, 1500);
 		font2.draw(game.batch, "Tap Anywhere to Begin", 70, 900);
+		
+		stage.act(Gdx.graphics.getDeltaTime());
+		stage.draw();
+		
 		game.batch.end();
 		
-		if (Gdx.input.isTouched()) {
+		if (button.isPressed()) {
 			game.setScreen(new GameScreen(game));
 			dispose();
 		}	

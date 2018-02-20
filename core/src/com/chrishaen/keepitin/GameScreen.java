@@ -211,7 +211,7 @@ public class GameScreen extends Game implements Screen{
 		
 		//	Render Score
 		batch.setProjectionMatrix(textCamera.combined);
-		font1.draw(batch, Integer.toString(score), -50, 800);
+		font1.draw(batch, Integer.toString(score), -70, 800);
 		batch.end();
 		
 		//	Maintains Balls Set Velocity 
