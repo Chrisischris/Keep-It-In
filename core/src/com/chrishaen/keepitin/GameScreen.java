@@ -190,7 +190,7 @@ public class GameScreen extends Game implements Screen{
 		parameter1.size = 150;
 		parameter1.characters = "0123456789";
 		font1 = generator1.generateFont(parameter1);
-		font1.setColor(0.20f, 0.17f, 0.13f, 1);
+		font1.setColor(0.1765f, 0.1647f, 0.1490f, 1);
 	}
 
 	@Override
@@ -200,7 +200,7 @@ public class GameScreen extends Game implements Screen{
 		//	Collision Listener
 		world.setContactListener(contactListener);
 		
-		Gdx.gl.glClearColor(0f, 0f, 0f, 1);
+		Gdx.gl.glClearColor(1f, 0.2708f, 0.2235f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		camera.update();
 		batch.setProjectionMatrix(camera.combined);

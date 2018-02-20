@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "2887091347",
+    "firebase_url": "https://keep-it-in.firebaseio.com",
+    "project_id": "keep-it-in",
+    "storage_bucket": "keep-it-in.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:2887091347:android:d2f117aca0767c38",
+        "android_client_info": {
+          "package_name": "com.chrishaen.keepitin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "2887091347-91794a7grf1g9mnmmsp1osia421u17qa.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.chrishaen.keepitin",
+            "certificate_hash": "be79a6606e392cfb9cc109094327f43ed350c279"
+          }
+        },
+        {
+          "client_id": "2887091347-pvupklu2si6pr65pkopu0uekm9e9k24c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB_Ld5XmWCHNT2SMpNI9DjwLLqEmxrzKrs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "2887091347-pvupklu2si6pr65pkopu0uekm9e9k24c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

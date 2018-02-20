@@ -60,7 +60,7 @@ public class MainMenuScreen implements Screen{
 		parameter.size = 150;
 		parameter.characters = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM";
 		font1 = generator.generateFont(parameter);
-		font1.setColor(0.20f, 0.17f, 0.13f, 1);
+		font1.setColor(0.1765f, 0.1647f, 0.1490f, 1);
 		
 		parameter.size = 65;
 		parameter.characters = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890:";
@@ -93,7 +93,7 @@ public class MainMenuScreen implements Screen{
 
 	@Override
 	public void render(float delta) {
-		Gdx.gl.glClearColor(0f, 0f, 0f, 1);
+		Gdx.gl.glClearColor(1f, 0.2708f, 0.2235f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		camera.update();
 		game.batch.setProjectionMatrix(camera.combined);
