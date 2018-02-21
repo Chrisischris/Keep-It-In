@@ -21,7 +21,7 @@ public class AndroidLauncher extends AndroidApplication {
 		super.onCreate(savedInstanceState);
 
 		// Create the libgdx View
-		View gameView = initializeForView(new KeepItIn());
+		View gameView = initializeForView(new KeepItIn(null));
 
 		setupAds();
 

@@ -19,7 +19,7 @@ public class KeepItIn extends Game {
 		font = new BitmapFont();
 		
 		//Comment out for android build
-		requestHandler.showBanner();
+		//requestHandler.showBanner();
 		
 		this.setScreen(new MainMenuScreen(this));
 	}
