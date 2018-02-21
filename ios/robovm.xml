@@ -50,8 +50,4 @@
     <framework>SafariServices</framework>
     <framework>GoogleMobileAds</framework>
   </frameworks>
-  <weakFrameworks>
-	  <framework>AdSupport</framework>
-	  <framework>StoreKit</framework>
-	</weakFrameworks>
 </config>
