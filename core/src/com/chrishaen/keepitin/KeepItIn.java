@@ -9,6 +9,10 @@ public class KeepItIn extends Game {
   	SpriteBatch batch;
 	BitmapFont font;
 
+	public KeepItIn() {
+		// TODO Auto-generated constructor stub
+	}
+
 	public void create() {
 		batch = new SpriteBatch();
 		// Use LibGDX's default Arial font.

@@ -33,13 +33,8 @@
     <pattern>org.apache.harmony.security.provider.crypto.CryptoProvider</pattern>
   </forceLinkClasses>
   <libs>
-      <lib>z</lib>   
+	<lib>libs/libadmob.a</lib>  
   </libs>
-  <frameworkPaths>
-        <lib>libs/libgdx.a</lib>
-		<lib>libs/libObjectAL.a</lib>
-		<lib>libs/libadmob.a</lib>
-    </frameworkPaths>
   <frameworks>
     <framework>UIKit</framework>
     <framework>OpenGLES</framework>
@@ -48,7 +43,8 @@
     <framework>OpenAL</framework>
     <framework>AudioToolbox</framework>
     <framework>AVFoundation</framework>
-    <framework>GoogleMobileAds</framework>
+    <framework>CoreBluetooth</framework>
+    <framework>SafariServices</framework>
   </frameworks>
   <weakFrameworks>
 	  <framework>AdSupport</framework>
