@@ -247,6 +247,7 @@ public class GameScreen extends Game implements Screen{
 			goMainMenu = true;
 		}
 		if(goMainMenu == true) {
+			ballVelocity = 12f;
 			if(score > prefs.getInteger("highScore", 0)) {
 				prefs.putInteger("highScore", score);
 				prefs.flush();
