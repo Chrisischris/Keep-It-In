@@ -116,7 +116,7 @@ public class GameScreen extends Game implements Screen{
 		bodyDef.position.set(playerPosX, playerPosY);		
 		playerBody = world.createBody(bodyDef);
 		FixtureDef fixtureDef = new FixtureDef();
-		fixtureDef.friction = 0.2f;
+		fixtureDef.friction = 0.3f;
 		playerBody.setUserData(playerImage);
 		
 		Array<Vector2> vertices = new Array<Vector2>();
@@ -180,7 +180,7 @@ public class GameScreen extends Game implements Screen{
 		ballBody = world.createBody(ballDef);
 		FixtureDef ballFixtureDef = new FixtureDef();
 		ballFixtureDef.restitution = 1f;
-		ballFixtureDef.friction = 0.2f;
+		ballFixtureDef.friction = 0.3f;
 		ballFixtureDef.shape = ballBox;
 		ballFixture = ballBody.createFixture(ballFixtureDef);
 		ballBody.setUserData(ballImage);
