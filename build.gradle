@@ -1,5 +1,4 @@
 buildscript {
-    project.ext.robopodsVersion = "1.14.0"
 
     repositories {
         mavenLocal()
@@ -23,6 +22,7 @@ allprojects {
         appName = "Keep It In"
         gdxVersion = '1.9.8'
         roboVMVersion = '2.3.3'
+        robopodsVersion = '2.2.2'
         box2DLightsVersion = '1.4'
         ashleyVersion = '1.7.0'
         aiVersion = '1.8.0'
@@ -97,7 +97,7 @@ project(":ios") {
         compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-ios"
         compile "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-ios"
         compile "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-ios"
-        compile "org.robovm:robopods-google-mobile-ads-ios:$robopodsVersion"
+        compile "com.mobidevelop.robovm:robopods-google-mobile-ads-ios:$robopodsVersion"
         
     }
 }

@@ -1,38 +1,39 @@
 package com.chrishaen.keepitin;
 
-import org.robovm.apple.foundation.NSAutoreleasePool;
-import org.robovm.apple.uikit.UIApplication;
-import com.badlogic.gdx.backends.iosrobovm.IOSApplication;
-import com.badlogic.gdx.backends.iosrobovm.IOSApplicationConfiguration;
+import com.badlogic.gdx.Application;
+import com.badlogic.gdx.backends.iosrobovm.objectal.OALSimpleAudio;
 import org.robovm.apple.coregraphics.CGRect;
 import org.robovm.apple.coregraphics.CGSize;
 import org.robovm.apple.foundation.NSArray;
+import org.robovm.apple.foundation.NSAutoreleasePool;
 import org.robovm.apple.foundation.NSObject;
 import org.robovm.apple.foundation.NSString;
+import org.robovm.apple.uikit.UIApplication;
 import org.robovm.apple.uikit.UIScreen;
-import org.robovm.bindings.admob.GADAdSizeManager;
-import org.robovm.bindings.admob.GADBannerView;
-import org.robovm.bindings.admob.GADBannerViewDelegateAdapter;
-import org.robovm.bindings.admob.GADRequest;
-import org.robovm.bindings.admob.GADRequestError;
 
-import com.badlogic.gdx.Application;
+import com.badlogic.gdx.backends.iosrobovm.IOSApplication;
 import com.badlogic.gdx.backends.iosrobovm.IOSApplication.Delegate;
+import com.badlogic.gdx.backends.iosrobovm.IOSApplicationConfiguration;
 import com.badlogic.gdx.utils.Logger;
+import org.robovm.pods.google.mobileads.*;
 
-public class IOSLauncher extends Delegate {
-	private static final Logger log = new Logger(IOSLauncher.class.getName(), Application.LOG_DEBUG);
-	private static final boolean USE_TEST_DEVICES = true;
-	private GADBannerView adview;
-	private boolean adsInitialized = false;
-	private IOSApplication iosApplication;
-	
+public class IOSLauncher extends Delegate implements IActivityRequestHandler{
+    private static final Logger log = new Logger(IOSLauncher.class.getName(), Application.LOG_DEBUG);
+    private static final boolean USE_TEST_DEVICES = false;
+    private GADBannerView adview;
+    private GADInterstitial ad;
+    private boolean adsInitialized = false;
+    private IOSApplication iosApplication;
+
+    @Override
     protected IOSApplication createApplication() {
-    		final IOSApplicationConfiguration config = new IOSApplicationConfiguration();
-		config.orientationLandscape = false;
-		config.orientationPortrait = true;
-        iosApplication = new IOSApplication(new KeepItIn(), config);
-    
+        final IOSApplicationConfiguration config = new IOSApplicationConfiguration();
+        config.orientationLandscape = false;
+        config.orientationPortrait = true;
+        config.allowIpod = true;
+        OALSimpleAudio.sharedInstance().setUseHardwareIfAvailable(true);
+
+        iosApplication = new IOSApplication(new KeepItIn(this), config);
         return iosApplication;
     }
 
@@ -40,103 +41,144 @@ public class IOSLauncher extends Delegate {
         NSAutoreleasePool pool = new NSAutoreleasePool();
         UIApplication.main(argv, null, IOSLauncher.class);
         pool.close();
+
     }
-    
-    public void hide() {
-		initializeAds();
 
-		final CGSize screenSize = UIScreen.getMainScreen().getBounds().getSize();
-		double screenWidth = screenSize.getWidth();
 
-		final CGSize adSize = adview.getBounds().getSize();
-		double adWidth = adSize.getWidth();
-		double adHeight = adSize.getHeight();
+    @Override
+    public void hideBanner() {
+        initializeAds();
 
-		log.debug(String.format("Hidding ad. size[%s, %s]", adWidth, adHeight));
+        final CGSize screenSize = UIScreen.getMainScreen().getBounds().getSize();
+        double screenWidth = screenSize.getWidth();
 
-		float bannerWidth = (float) screenWidth;
-		float bannerHeight = (float) (bannerWidth / adWidth * adHeight);
+        final CGSize adSize = adview.getBounds().getSize();
+        double adWidth = adSize.getWidth();
+        double adHeight = adSize.getHeight();
 
-		adview.setFrame(new CGRect(0, -bannerHeight, bannerWidth, bannerHeight));
-	}
+        log.debug(String.format("Hidding ad. size[%s, %s]", adWidth, adHeight));
 
-	public void show() {
-		initializeAds();
+        float bannerWidth = (float) screenWidth;
+        float bannerHeight = (float) (bannerWidth / adWidth * adHeight);
 
-		final CGSize screenSize = UIScreen.getMainScreen().getBounds().getSize();
-		double screenWidth = screenSize.getWidth();
+        adview.setFrame(new CGRect(0, -bannerHeight, bannerWidth, bannerHeight));
+    }
 
-		final CGSize adSize = adview.getBounds().getSize();
-		double adWidth = adSize.getWidth();
-		double adHeight = adSize.getHeight();
+    @Override
+    public void showBanner() {
+        initializeAds();
 
-		log.debug(String.format("Showing ad. size[%s, %s]", adWidth, adHeight));
+        final CGSize screenSize = UIScreen.getMainScreen().getBounds().getSize();
+        double screenWidth = screenSize.getWidth();
+        double screenHeight = screenSize.getHeight();
 
-		float bannerWidth = (float) screenWidth;
-		float bannerHeight = (float) (bannerWidth / adWidth * adHeight);
+        final CGSize adSize = adview.getBounds().getSize();
+        double adWidth = adSize.getWidth();
+        double adHeight = adSize.getHeight();
 
-		adview.setFrame(new CGRect((screenWidth / 2) - adWidth / 2, 0, bannerWidth, bannerHeight));
-	}
+        log.debug(String.format("Showing ad. size[%s, %s]", adWidth, adHeight));
 
-	public void initializeAds() {
-		if (!adsInitialized) {
-			log.debug("Initalizing ads...");
+        float bannerWidth = (float) screenWidth;
+        float bannerHeight = (float) (bannerWidth / adWidth * adHeight);
 
-			adsInitialized = true;
+        adview.setFrame(new CGRect((screenWidth / 2) - adWidth / 2, screenHeight - adHeight, bannerWidth, bannerHeight));
+    }
 
-			adview = new GADBannerView(GADAdSizeManager.smartBannerPortrait());
-			adview.setAdUnitID("ca-app-pub-3940256099942544/6300978111"); //put your secret key here
-			adview.setRootViewController(iosApplication.getUIViewController());
-			iosApplication.getUIViewController().getView().addSubview(adview);
+    @Override
+    public void showInterstitial() {
+        if(ad.hasBeenUsed()) {
+            ad = new GADInterstitial("ca-app-pub-5470650884230497/3425838768");
 
-			final GADRequest request = GADRequest.request();
-			if (USE_TEST_DEVICES) {
-				final NSArray<NSObject> testDevices = new NSArray<NSObject>(
-						new NSString(GADRequest.GAD_SIMULATOR_ID));
-				request.setTestDevices(testDevices);
-				log.debug("Test devices: " + request.getTestDevices());
-			}
+            GADRequest request = new GADRequest();
+            final NSArray<?> testDevices = new NSArray<NSObject>(
+                    new NSString(GADRequest.getSimulatorID()));
+            request.setTestDevices(testDevices.asStringList());
 
-			adview.setDelegate(new GADBannerViewDelegateAdapter() {
-				@Override
-				public void didReceiveAd(GADBannerView view) {
-					super.didReceiveAd(view);
-					log.debug("didReceiveAd");
-				}
+            ad.loadRequest(request);
+            log.debug("Request loaded..");
+        }
 
-				@Override
-				public void didFailToReceiveAd(GADBannerView view,
-						GADRequestError error) {
-					super.didFailToReceiveAd(view, error);
-					log.debug("didFailToReceiveAd:" + error);
-				}
-			});
+        if(ad.isReady()){
+               ad.present(iosApplication.getUIViewController());
+               log.debug("Interstitial Ad shown");
+           }else{
+               log.debug("Interstitial Ad not ready");
+        }
+    }
 
-			adview.loadRequest(request);
+    @Override
+    public void initAds(){
+        ad = new GADInterstitial("ca-app-pub-5470650884230497/3425838768");
 
-			log.debug("Initalizing ads complete.");
-		}
-	}
+        GADRequest request = new GADRequest();
+        final NSArray<?> testDevices = new NSArray<NSObject>(
+                new NSString(GADRequest.getSimulatorID()));
+        request.setTestDevices(testDevices.asStringList());
 
+        ad.loadRequest(request);
+        log.debug("Request loaded..");
+    }
+
+    public void initializeAds() {
+        if (!adsInitialized) {
+            log.debug("Initalizing ads...");
+
+            adsInitialized = true;
+
+            adview = new GADBannerView(GADAdSize.SmartBannerPortrait());
+            adview.setAdUnitID("ca-app-pub-5470650884230497/3425838768"); //put your secret key here
+            adview.setRootViewController(iosApplication.getUIViewController());
+            iosApplication.getUIViewController().getView().addSubview(adview);
+
+            final GADRequest request = new GADRequest();
+            if (USE_TEST_DEVICES) {
+                final NSArray<?> testDevices = new NSArray<NSObject>(
+                        new NSString(GADRequest.getSimulatorID()));
+                request.setTestDevices(testDevices.asStringList());
+                log.debug("Test devices: " + request.getTestDevices());
+            }
+
+            adview.setDelegate(new GADBannerViewDelegateAdapter() {
+                @Override
+                public void didReceiveAd(GADBannerView view) {
+                    super.didReceiveAd(view);
+                    log.debug("didReceiveAd");
+                }
+
+                @Override
+                public void didFailToReceiveAd(GADBannerView view,
+                                               GADRequestError error) {
+                    super.didFailToReceiveAd(view, error);
+                    log.debug("didFailToReceiveAd:" + error);
+                }
+            });
+
+            adview.loadRequest(request);
+
+            log.debug("Initalizing ads complete.");
+        }
+    }
+
+    @Override
     public void showAds(boolean show) {
-    	initializeAds();
+        initializeAds();
 
-       	final CGSize screenSize = UIScreen.getMainScreen().getBounds().getSize();
-		double screenWidth = screenSize.getWidth();
+        final CGSize screenSize = UIScreen.getMainScreen().getBounds().getSize();
+        double screenWidth = screenSize.getWidth();
 
-		final CGSize adSize = adview.getBounds().getSize();
-		double adWidth = adSize.getWidth();
-		double adHeight = adSize.getHeight();
+        final CGSize adSize = adview.getBounds().getSize();
+        double adWidth = adSize.getWidth();
+        double adHeight = adSize.getHeight();
 
-		log.debug(String.format("Hidding ad. size[%s, %s]", adWidth, adHeight));
+        log.debug(String.format("Hidding ad. size[%s, %s]", adWidth, adHeight));
 
-		float bannerWidth = (float) screenWidth;
-		float bannerHeight = (float) (bannerWidth / adWidth * adHeight);
+        float bannerWidth = (float) screenWidth;
+        float bannerHeight = (float) (bannerWidth / adWidth * adHeight);
 
-		if(show) {
-			adview.setFrame(new CGRect((screenWidth / 2) - adWidth / 2, 0, bannerWidth, bannerHeight));
-		} else {
-			adview.setFrame(new CGRect(0, -bannerHeight, bannerWidth, bannerHeight));
-		}
+        if(show) {
+            adview.setFrame(new CGRect((screenWidth / 2) - adWidth / 2, 0, bannerWidth, bannerHeight));
+        } else {
+            adview.setFrame(new CGRect(0, -bannerHeight, bannerWidth, bannerHeight));
+        }
     }
 }

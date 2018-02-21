@@ -8,15 +8,19 @@ public class KeepItIn extends Game {
 
   	SpriteBatch batch;
 	BitmapFont font;
-
-	public KeepItIn() {
-		// TODO Auto-generated constructor stub
+	IActivityRequestHandler requestHandler;
+	public KeepItIn(IActivityRequestHandler requestHandler) {
+		this.requestHandler = requestHandler;
 	}
 
 	public void create() {
 		batch = new SpriteBatch();
 		// Use LibGDX's default Arial font.
 		font = new BitmapFont();
+		
+		//Comment out for android build
+		requestHandler.showBanner();
+		
 		this.setScreen(new MainMenuScreen(this));
 	}
 
