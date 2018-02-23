@@ -7,7 +7,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.1'
+        classpath 'com.android.tools.build:gradle:2.3.3'
         classpath 'com.mobidevelop.robovm:robovm-gradle-plugin:2.3.3'
         classpath 'com.google.gms:google-services:3.2.0'
     }
@@ -98,6 +98,7 @@ project(":ios") {
         compile "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-ios"
         compile "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-ios"
         compile "com.mobidevelop.robovm:robopods-google-mobile-ads-ios:$robopodsVersion"
+        compile fileTree (dir:'libs', include:'*.jar')
         
     }
 }
