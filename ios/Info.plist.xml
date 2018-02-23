@@ -31,7 +31,6 @@
     <key>UIDeviceFamily</key>
     <array>
         <integer>1</integer>
-        <integer>2</integer>
     </array>
     <key>UIRequiredDeviceCapabilities</key>
     <array>
@@ -46,5 +45,7 @@
     </array>
     <key>CFBundleIconName</key>
     <string>AppIcon</string>
+    <key>MinimumOSVersion</key>
+    <string>7.0</string>
 </dict>
 </plist>
