@@ -221,7 +221,8 @@ public class GameScreen extends Game implements Screen{
 		//	Increase ball speed
 		if (score - lastIncrement == 5) {
 			lastIncrement = score;
-			ballVelocity += 0.75;
+			ballVelocity += 1f;
+			MyInputProcessor.paddleSpeed += 0.15f;
 		}
 		
 		//	Maintains Balls Set Velocity 
@@ -241,13 +242,14 @@ public class GameScreen extends Game implements Screen{
 		
 		//	Box2d render update
 		//debugRenderer.render(world, camera.combined);
-		world.step(1/60f, 6, 6);
+		world.step(1/60f, 10, 10);
 		
 		if(ballBody.getPosition().x > 18 || ballBody.getPosition().x < 0 || ballBody.getPosition().y > 32 || ballBody.getPosition().y < 0) {
 			goMainMenu = true;
 		}
 		if(goMainMenu == true) {
 			ballVelocity = 12f;
+			MyInputProcessor.paddleSpeed = 5f;
 			if(score > prefs.getInteger("highScore", 0)) {
 				prefs.putInteger("highScore", score);
 				prefs.flush();
@@ -257,7 +259,6 @@ public class GameScreen extends Game implements Screen{
 			dispose();
 		}
 		
-		System.out.println(score);
 	}
 	
 	@Override
