@@ -19,10 +19,10 @@ public class MyInputProcessor implements InputProcessor{
 
 	@Override
 	public boolean keyUp(int keycode) {
-		if(keycode == Input.Keys.D) {
+		if(keycode == Input.Keys.D && GameScreen.playerBody.getAngularVelocity() > 0) {
 			GameScreen.playerBody.setAngularVelocity(0f);
 		}
-		if(keycode == Input.Keys.A) {
+		if(keycode == Input.Keys.A && GameScreen.playerBody.getAngularVelocity() < 0) {
 			GameScreen.playerBody.setAngularVelocity(0f);
 		}
 		return false;
@@ -47,10 +47,10 @@ public class MyInputProcessor implements InputProcessor{
 
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-		if(screenX > Gdx.graphics.getWidth()/2) {
+		if(screenX > Gdx.graphics.getWidth()/2 && GameScreen.playerBody.getAngularVelocity() > 0) {
 			GameScreen.playerBody.setAngularVelocity(0f);
 		}
-		if(screenX < Gdx.graphics.getWidth()/2) {
+		if(screenX < Gdx.graphics.getWidth()/2 && GameScreen.playerBody.getAngularVelocity() < 0) {
 			GameScreen.playerBody.setAngularVelocity(0f);
 		}
 		return false;
