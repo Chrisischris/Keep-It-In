@@ -4,6 +4,7 @@ import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -85,6 +86,10 @@ public class GameScreen extends Game implements Screen{
 	FreeTypeFontGenerator generator1 = new FreeTypeFontGenerator(Gdx.files.internal("Organo.ttf"));
 	FreeTypeFontParameter parameter1 = new FreeTypeFontParameter();
 	BitmapFont font1;
+	
+	static int useBallNumber;
+	
+	Sound gameOver = Gdx.audio.newSound(Gdx.files.internal("gameOver.wav"));
 	
 	public GameScreen(final KeepItIn game) {
 		this.game = game;
@@ -170,7 +175,8 @@ public class GameScreen extends Game implements Screen{
 		Box2DSeparator.separate(playerBody, fixtureDef, vertices, 30f);
 		
 		//	Ball Texture
-		ballImage = new Texture(Gdx.files.internal("ball.png"));
+		useBallNumber = prefs.getInteger("setBall", 1);
+		ballImage = new Texture(Gdx.files.internal("ball" + useBallNumber + ".png"));
 		//	Ball Box2d
 		BodyDef ballDef = new BodyDef();
 		ballDef.type = BodyType.DynamicBody;
@@ -248,12 +254,19 @@ public class GameScreen extends Game implements Screen{
 			goMainMenu = true;
 		}
 		if(goMainMenu == true) {
+			gameOver.play();
+			//	Reset Speeds
 			ballVelocity = 12f;
 			MyInputProcessor.paddleSpeed = 5f;
+			// Set Points Value
+			int tempPoints = score + prefs.getInteger("points", 0);
+			prefs.putInteger("points", tempPoints);
+			//	Set HighScore
 			if(score > prefs.getInteger("highScore", 0)) {
 				prefs.putInteger("highScore", score);
 				prefs.flush();
 			}
+			//	Go Main Menu
 			goMainMenu = false;
 			game.setScreen(new MainMenuScreen(game));
 			dispose();

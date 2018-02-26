@@ -2,6 +2,7 @@ package com.chrishaen.keepitin;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -29,21 +30,51 @@ public class MainMenuScreen implements Screen{
 	Sprite ground;
 	
 	FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Organo.ttf"));
-	FreeTypeFontParameter parameter = new FreeTypeFontParameter();
+	FreeTypeFontParameter parameter1 = new FreeTypeFontParameter();
 	BitmapFont font1;
 	
-	FreeTypeFontGenerator generator1 = new FreeTypeFontGenerator(Gdx.files.internal("Organo.ttf"));
-	FreeTypeFontParameter parameter1 = new FreeTypeFontParameter();
+	FreeTypeFontParameter parameter2 = new FreeTypeFontParameter();
 	BitmapFont font2;
+	
+	FreeTypeFontParameter parameter3 = new FreeTypeFontParameter();
+	BitmapFont font3;
 	
 	//	Play Button
 	private Stage stage;
-    private Texture myTexture;
     private TextureRegion myTextureRegion;
     private TextureRegionDrawable myTexRegionDrawable;
     private ImageButton button;
-	
-    int highScore = GameScreen.prefs.getInteger("highScore", 0);
+    
+    private TextureRegion ball1Region;
+    private TextureRegionDrawable ball1Drawable;
+    private ImageButton ball1Button;
+    
+    private TextureRegion ball2Region;
+    private TextureRegionDrawable ball2Drawable;
+    private ImageButton ball2Button;
+    
+    private TextureRegion ball3Region;
+    private TextureRegionDrawable ball3Drawable;
+    private ImageButton ball3Button;
+    
+    private TextureRegion ball4Region;
+    private TextureRegionDrawable ball4Drawable;
+    private ImageButton ball4Button;
+    
+    private TextureRegion ball5Region;
+    private TextureRegionDrawable ball5Drawable;
+    private ImageButton ball5Button;
+    
+    boolean ball2Owned;
+    boolean ball3Owned;
+    boolean ball4Owned;
+    boolean ball5Owned;
+    
+    int highScore;
+    int points;
+    
+    Sound click = Gdx.audio.newSound(Gdx.files.internal("click.wav"));
+    Sound wrongClick = Gdx.audio.newSound(Gdx.files.internal("wrongClick.wav"));
     
 	public MainMenuScreen(final KeepItIn game) {
 		this.game = game;
@@ -57,33 +88,84 @@ public class MainMenuScreen implements Screen{
 		ground.setPosition(0, 0);
 		ground.setSize(WORLD_WIDTH , WORLD_HEIGHT);
 		
-		parameter.size = 150;
-		parameter.characters = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM";
-		font1 = generator.generateFont(parameter);
+		parameter1.size = 150;
+		parameter1.characters = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM";
+		font1 = generator.generateFont(parameter1);
 		font1.setColor(0.1765f, 0.1647f, 0.1490f, 1);
 		
-		parameter.size = 65;
-		parameter.characters = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890:";
-		font2 = generator.generateFont(parameter);
+		parameter2.size = 65;
+		parameter2.characters = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890:";
+		font2 = generator.generateFont(parameter2);
 		font2.setColor(1f, 1f, 1f, 1);
 		
-		//	Play Button
-		myTexture = new Texture(Gdx.files.internal("play.png"));
-        myTextureRegion = new TextureRegion(myTexture);
-        myTexRegionDrawable = new TextureRegionDrawable(myTextureRegion);
-        button = new ImageButton(myTexRegionDrawable); //Set the button up
-
-        stage = new Stage(viewport); //Set up a stage for the ui
-        stage.addActor(button); //Add the button to the stage to perform rendering and take input.
+		parameter3.size = 40;
+		parameter3.characters = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM0123456789,";
+		font3 = generator.generateFont(parameter3);
+		font3.setColor(0.1765f, 0.1647f, 0.1490f, 1);
+		
+		stage = new Stage(viewport); //Set up a stage for the ui
         Gdx.input.setInputProcessor(stage); //Start taking input from the ui
+        
+        myTextureRegion = new TextureRegion(new Texture(Gdx.files.internal("play.png")));
+        myTexRegionDrawable = new TextureRegionDrawable(myTextureRegion);
+        button = new ImageButton(myTexRegionDrawable); 
         stage.addActor(button);
         button.setSize (300, 169);
         button.setPosition(390, 700);
+        stage.addActor(button);
         
-        //	Reset Highscore
+        ball1Region = new TextureRegion(new Texture(Gdx.files.internal("ball1.png")));
+        ball1Drawable = new TextureRegionDrawable(ball1Region);
+        ball1Button = new ImageButton(ball1Drawable); 
+        stage.addActor(ball1Button);
+        ball1Button.setSize (80, 80);
+        ball1Button.setPosition(540-340, 500);
+        stage.addActor(ball1Button);
+        
+        ball2Region = new TextureRegion(new Texture(Gdx.files.internal("ball2.png")));
+        ball2Drawable = new TextureRegionDrawable(ball2Region);
+        ball2Button = new ImageButton(ball2Drawable); 
+        stage.addActor(ball2Button);
+        ball2Button.setSize (80, 80);
+        ball2Button.setPosition(540-190, 500);
+        stage.addActor(ball2Button);
+        
+        ball3Region = new TextureRegion(new Texture(Gdx.files.internal("ball3.png")));
+        ball3Drawable = new TextureRegionDrawable(ball3Region);
+        ball3Button = new ImageButton(ball3Drawable); 
+        stage.addActor(ball3Button);
+        ball3Button.setSize (80, 80);
+        ball3Button.setPosition(540-40, 500);
+        stage.addActor(ball3Button);
+        
+        ball4Region = new TextureRegion(new Texture(Gdx.files.internal("ball4.png")));
+        ball4Drawable = new TextureRegionDrawable(ball4Region);
+        ball4Button = new ImageButton(ball4Drawable); 
+        stage.addActor(ball4Button);
+        ball4Button.setSize (80, 80);
+        ball4Button.setPosition(540+110, 500);
+        stage.addActor(ball4Button);
+        
+        ball5Region = new TextureRegion(new Texture(Gdx.files.internal("ball5.png")));
+        ball5Drawable = new TextureRegionDrawable(ball5Region);
+        ball5Button = new ImageButton(ball5Drawable); 
+        stage.addActor(ball5Button);
+        ball5Button.setSize (80, 80);
+        ball5Button.setPosition(540+260, 500);
+        stage.addActor(ball5Button);
+        
+        ball2Owned = GameScreen.prefs.getBoolean("ball2Owned", false);
+        ball3Owned = GameScreen.prefs.getBoolean("ball3Owned", false);
+        ball4Owned = GameScreen.prefs.getBoolean("ball4Owned", false);
+        ball5Owned = GameScreen.prefs.getBoolean("ball5Owned", false);
+        
+        highScore = GameScreen.prefs.getInteger("highScore", 0); 
+        points = GameScreen.prefs.getInteger("points", 0);       
+        //	Reset High score
         //GameScreen.prefs.putInteger("highScore", 0);
         //highScore = GameScreen.prefs.getInteger("highScore", 0);
         //GameScreen.prefs.flush();
+        //KeepItIn.requestHandler.showBanner();
 	}
 	@Override
 	public void show() {
@@ -102,14 +184,83 @@ public class MainMenuScreen implements Screen{
 		
 		font1.draw(game.batch, "Keep It In", 75, 1500);
 		
-		font2.draw(game.batch, "Highscore: " + Integer.toString(highScore), 325, 1100);
+		font2.draw(game.batch, "Highscore: " + Integer.toString(highScore), 325, 1200);
+		font2.draw(game.batch, "Points: " + Integer.toString(points), 375, 1050);
+		
+		font3.draw(game.batch, "Cost", 10, 450);
+		font3.draw(game.batch, "0    100   500  1000 10000", 225, 450);
 		
 		game.batch.end();
 		
 		stage.act(Gdx.graphics.getDeltaTime());
 		stage.draw();
 		
+		if (ball1Button.isPressed()) {
+			click.play();
+			GameScreen.prefs.putInteger("setBall", 1);
+			GameScreen.prefs.flush();
+		}
+		if (ball2Button.isPressed()) {
+			if(ball2Owned == true) {
+				click.play();
+				GameScreen.prefs.putInteger("setBall", 2);
+				GameScreen.prefs.flush();
+			}else if(ball2Owned == false && points >= 100) {
+				wrongClick.play();
+				GameScreen.prefs.putInteger("points", points - 100);
+				points = GameScreen.prefs.getInteger("points");
+				GameScreen.prefs.putBoolean("ball2Owned", true);
+				GameScreen.prefs.putInteger("setBall", 2);
+				GameScreen.prefs.flush();
+			}else {
+				wrongClick.play();
+			}
+		}
+		if (ball3Button.isPressed()) {
+			if(ball3Owned == true) {
+				GameScreen.prefs.putInteger("setBall", 3);
+				GameScreen.prefs.flush();
+			}else if(ball3Owned == false && points >= 500) {
+				GameScreen.prefs.putInteger("points", points - 500);
+				points = GameScreen.prefs.getInteger("points");
+				GameScreen.prefs.putBoolean("ball3Owned", true);
+				GameScreen.prefs.putInteger("setBall", 3);
+				GameScreen.prefs.flush();
+			}else {
+				wrongClick.play();
+			}	
+		}
+		if (ball4Button.isPressed()) {
+			if(ball4Owned == true) {
+				GameScreen.prefs.putInteger("setBall", 4);
+				GameScreen.prefs.flush();
+			}else if(ball4Owned == false && points >= 1000) {
+				GameScreen.prefs.putInteger("points", points - 1000);
+				points = GameScreen.prefs.getInteger("points");
+				GameScreen.prefs.putBoolean("ball4Owned", true);
+				GameScreen.prefs.putInteger("setBall", 4);
+				GameScreen.prefs.flush();
+			}else {
+				wrongClick.play();
+			}
+		}
+		if (ball5Button.isPressed()) {
+			if(ball5Owned == true) {
+				click.play();
+				GameScreen.prefs.putInteger("setBall", 5);
+				GameScreen.prefs.flush();
+			}else if(ball5Owned == false && points >= 10000) {
+				GameScreen.prefs.putInteger("points", points - 10000);
+				points = GameScreen.prefs.getInteger("points");
+				GameScreen.prefs.putBoolean("ball5Owned", true);
+				GameScreen.prefs.putInteger("setBall", 5);
+				GameScreen.prefs.flush();
+			}else {
+				wrongClick.play();
+			}	
+		}
 		if (button.isPressed()) {
+			click.play();
 			game.setScreen(new GameScreen(game));
 			dispose();
 		}	

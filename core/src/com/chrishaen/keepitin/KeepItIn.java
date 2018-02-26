@@ -8,9 +8,9 @@ public class KeepItIn extends Game {
 
   	SpriteBatch batch;
 	BitmapFont font;
-	IActivityRequestHandler requestHandler;
+	static IActivityRequestHandler requestHandler;
 	public KeepItIn(IActivityRequestHandler requestHandler) {
-		this.requestHandler = requestHandler;
+		KeepItIn.requestHandler = requestHandler;
 	}
 
 	public void create() {
