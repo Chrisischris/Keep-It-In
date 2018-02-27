@@ -22,8 +22,8 @@ android {
         applicationId "com.chrishaen.keepitin"
         minSdkVersion 14
         targetSdkVersion 27
-        versionCode 3
-        versionName "1.1"
+        versionCode 4
+        versionName "1.2"
     }
     buildTypes {
         release {
