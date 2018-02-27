@@ -258,9 +258,10 @@ public class GameScreen extends Game implements Screen{
 			//	Reset Speeds
 			ballVelocity = 12f;
 			MyInputProcessor.paddleSpeed = 5f;
-			// Set Points Value
+			//	Set Points Value
 			int tempPoints = score + prefs.getInteger("points", 0);
 			prefs.putInteger("points", tempPoints);
+			prefs.flush();
 			//	Set HighScore
 			if(score > prefs.getInteger("highScore", 0)) {
 				prefs.putInteger("highScore", score);
