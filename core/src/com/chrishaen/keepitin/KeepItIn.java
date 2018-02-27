@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class KeepItIn extends Game {
 	
-	static boolean iosBuild = true;
+	static boolean iosBuild = false;
 	
   	SpriteBatch batch;
 	BitmapFont font;
