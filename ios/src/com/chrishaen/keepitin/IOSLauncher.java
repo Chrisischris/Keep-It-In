@@ -87,7 +87,7 @@ public class IOSLauncher extends Delegate implements IActivityRequestHandler{
     @Override
     public void showInterstitial() {
         if(ad.hasBeenUsed()) {
-            ad = new GADInterstitial("ca-app-pub-5470650884230497/3425838768");
+            ad = new GADInterstitial("ca-app-pub-5470650884230497/4241086782");
 
             GADRequest request = new GADRequest();
             final NSArray<?> testDevices = new NSArray<NSObject>(
@@ -108,7 +108,7 @@ public class IOSLauncher extends Delegate implements IActivityRequestHandler{
 
     @Override
     public void initAds(){
-        ad = new GADInterstitial("ca-app-pub-5470650884230497/3425838768");
+        ad = new GADInterstitial("ca-app-pub-5470650884230497/4241086782");
 
         GADRequest request = new GADRequest();
         final NSArray<?> testDevices = new NSArray<NSObject>(

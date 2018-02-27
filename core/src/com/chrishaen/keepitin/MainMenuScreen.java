@@ -75,6 +75,9 @@ public class MainMenuScreen implements Screen{
     
     Sound click = Gdx.audio.newSound(Gdx.files.internal("click.wav"));
     Sound wrongClick = Gdx.audio.newSound(Gdx.files.internal("wrongClick.wav"));
+
+	long time = System.currentTimeMillis();
+	long lastTime = 0;
     
 	public MainMenuScreen(final KeepItIn game) {
 		this.game = game;
@@ -165,7 +168,8 @@ public class MainMenuScreen implements Screen{
         //GameScreen.prefs.putInteger("highScore", 0);
         //highScore = GameScreen.prefs.getInteger("highScore", 0);
         //GameScreen.prefs.flush();
-        //KeepItIn.requestHandler.showBanner();
+        if (KeepItIn.iosBuild == true)
+        		KeepItIn.requestHandler.initAds();
 	}
 	@Override
 	public void show() {
@@ -175,6 +179,8 @@ public class MainMenuScreen implements Screen{
 
 	@Override
 	public void render(float delta) {
+		time = System.currentTimeMillis();
+
 		Gdx.gl.glClearColor(1f, 0.2708f, 0.2235f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		camera.update();
@@ -195,18 +201,24 @@ public class MainMenuScreen implements Screen{
 		stage.act(Gdx.graphics.getDeltaTime());
 		stage.draw();
 		
-		if (ball1Button.isPressed()) {
+		if (ball1Button.isPressed() && (time - lastTime) > 500) {
+			lastTime = System.currentTimeMillis();
 			click.play();
 			GameScreen.prefs.putInteger("setBall", 1);
 			GameScreen.prefs.flush();
+			if (KeepItIn.iosBuild == true)
+				KeepItIn.requestHandler.showInterstitial();
 		}
-		if (ball2Button.isPressed()) {
+		if (ball2Button.isPressed() && (time - lastTime) > 500) {
+			lastTime = System.currentTimeMillis();
 			if(ball2Owned == true) {
 				click.play();
 				GameScreen.prefs.putInteger("setBall", 2);
 				GameScreen.prefs.flush();
+				if (KeepItIn.iosBuild == true)
+					KeepItIn.requestHandler.showInterstitial();
 			}else if(ball2Owned == false && points >= 100) {
-				wrongClick.play();
+				click.play();
 				GameScreen.prefs.putInteger("points", points - 100);
 				points = GameScreen.prefs.getInteger("points");
 				GameScreen.prefs.putBoolean("ball2Owned", true);
@@ -214,13 +226,20 @@ public class MainMenuScreen implements Screen{
 				GameScreen.prefs.flush();
 			}else {
 				wrongClick.play();
+				if (KeepItIn.iosBuild == true)
+					KeepItIn.requestHandler.showInterstitial();
 			}
 		}
-		if (ball3Button.isPressed()) {
+		if (ball3Button.isPressed() && (time - lastTime) > 500) {
+			lastTime = System.currentTimeMillis();
 			if(ball3Owned == true) {
+				click.play();
 				GameScreen.prefs.putInteger("setBall", 3);
 				GameScreen.prefs.flush();
+				if (KeepItIn.iosBuild == true)
+					KeepItIn.requestHandler.showInterstitial();
 			}else if(ball3Owned == false && points >= 500) {
+				click.play();
 				GameScreen.prefs.putInteger("points", points - 500);
 				points = GameScreen.prefs.getInteger("points");
 				GameScreen.prefs.putBoolean("ball3Owned", true);
@@ -228,13 +247,20 @@ public class MainMenuScreen implements Screen{
 				GameScreen.prefs.flush();
 			}else {
 				wrongClick.play();
+				if (KeepItIn.iosBuild == true)
+					KeepItIn.requestHandler.showInterstitial();
 			}	
 		}
-		if (ball4Button.isPressed()) {
+		if (ball4Button.isPressed() && (time - lastTime) > 500) {
+			lastTime = System.currentTimeMillis();
 			if(ball4Owned == true) {
+				click.play();
 				GameScreen.prefs.putInteger("setBall", 4);
 				GameScreen.prefs.flush();
+				if (KeepItIn.iosBuild == true)
+					KeepItIn.requestHandler.showInterstitial();
 			}else if(ball4Owned == false && points >= 1000) {
+				click.play();
 				GameScreen.prefs.putInteger("points", points - 1000);
 				points = GameScreen.prefs.getInteger("points");
 				GameScreen.prefs.putBoolean("ball4Owned", true);
@@ -242,14 +268,20 @@ public class MainMenuScreen implements Screen{
 				GameScreen.prefs.flush();
 			}else {
 				wrongClick.play();
+				if (KeepItIn.iosBuild == true)
+					KeepItIn.requestHandler.showInterstitial();
 			}
 		}
-		if (ball5Button.isPressed()) {
+		if (ball5Button.isPressed() && (time - lastTime) > 500) {
+			lastTime = System.currentTimeMillis();
 			if(ball5Owned == true) {
 				click.play();
 				GameScreen.prefs.putInteger("setBall", 5);
 				GameScreen.prefs.flush();
+				if (KeepItIn.iosBuild == true)
+					KeepItIn.requestHandler.showInterstitial();
 			}else if(ball5Owned == false && points >= 10000) {
+				click.play();
 				GameScreen.prefs.putInteger("points", points - 10000);
 				points = GameScreen.prefs.getInteger("points");
 				GameScreen.prefs.putBoolean("ball5Owned", true);
@@ -257,9 +289,12 @@ public class MainMenuScreen implements Screen{
 				GameScreen.prefs.flush();
 			}else {
 				wrongClick.play();
+				if (KeepItIn.iosBuild == true)
+					KeepItIn.requestHandler.showInterstitial();
 			}	
 		}
-		if (button.isPressed()) {
+		if (button.isPressed() && (time - lastTime) > 500) {
+			lastTime = System.currentTimeMillis();
 			click.play();
 			game.setScreen(new GameScreen(game));
 			dispose();

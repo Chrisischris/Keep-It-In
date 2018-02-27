@@ -5,7 +5,9 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class KeepItIn extends Game {
-
+	
+	static boolean iosBuild = true;
+	
   	SpriteBatch batch;
 	BitmapFont font;
 	static IActivityRequestHandler requestHandler;
@@ -18,8 +20,8 @@ public class KeepItIn extends Game {
 		// Use LibGDX's default Arial font.
 		font = new BitmapFont();
 		
-		//Comment out for android build
-		//requestHandler.showBanner();
+		if (iosBuild == true)
+			requestHandler.showBanner();
 		
 		this.setScreen(new MainMenuScreen(this));
 	}
