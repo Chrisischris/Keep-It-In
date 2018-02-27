@@ -168,8 +168,6 @@ public class MainMenuScreen implements Screen{
         //GameScreen.prefs.putInteger("highScore", 0);
         //highScore = GameScreen.prefs.getInteger("highScore", 0);
         //GameScreen.prefs.flush();
-        if (KeepItIn.iosBuild == true)
-        		KeepItIn.requestHandler.initAds();
 	}
 	@Override
 	public void show() {

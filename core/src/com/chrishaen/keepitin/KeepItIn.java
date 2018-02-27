@@ -20,8 +20,10 @@ public class KeepItIn extends Game {
 		// Use LibGDX's default Arial font.
 		font = new BitmapFont();
 		
-		if (iosBuild == true)
+		if (iosBuild == true) {
 			requestHandler.showBanner();
+			requestHandler.initAds();
+		}
 		
 		this.setScreen(new MainMenuScreen(this));
 	}
