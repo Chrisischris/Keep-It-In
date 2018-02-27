@@ -51,5 +51,7 @@
     <string>AppIcon</string>
     <key>MinimumOSVersion</key>
     <string>7.0</string>
+    <key>ITSAppUsesNonExemptEncryption</key>
+    <false/>
 </dict>
 </plist>
