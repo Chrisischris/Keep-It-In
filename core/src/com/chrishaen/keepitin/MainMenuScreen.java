@@ -206,6 +206,15 @@ public class MainMenuScreen implements Screen{
 			GameScreen.prefs.flush();
 			if (KeepItIn.iosBuild == true)
 				KeepItIn.requestHandler.showInterstitial();
+			if (KeepItIn.androidBuild == true) {
+				KeepItIn.requestHandler.showInterstitial(new Runnable() {
+					@Override
+					public void run() {
+						System.out.println("Interstitial app closed");
+						game.setScreen(new MainMenuScreen(game));
+					}
+				});
+			}
 		}
 		if (ball2Button.isPressed() && (time - lastTime) > 500) {
 			lastTime = System.currentTimeMillis();

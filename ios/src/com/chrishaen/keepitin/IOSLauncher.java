@@ -1,7 +1,12 @@
 package com.chrishaen.keepitin;
 
 import com.badlogic.gdx.Application;
+import com.badlogic.gdx.backends.iosrobovm.IOSApplication;
+import com.badlogic.gdx.backends.iosrobovm.IOSApplication.Delegate;
+import com.badlogic.gdx.backends.iosrobovm.IOSApplicationConfiguration;
 import com.badlogic.gdx.backends.iosrobovm.objectal.OALSimpleAudio;
+import com.badlogic.gdx.utils.Logger;
+
 import org.robovm.apple.coregraphics.CGRect;
 import org.robovm.apple.coregraphics.CGSize;
 import org.robovm.apple.foundation.NSArray;
@@ -10,12 +15,12 @@ import org.robovm.apple.foundation.NSObject;
 import org.robovm.apple.foundation.NSString;
 import org.robovm.apple.uikit.UIApplication;
 import org.robovm.apple.uikit.UIScreen;
-
-import com.badlogic.gdx.backends.iosrobovm.IOSApplication;
-import com.badlogic.gdx.backends.iosrobovm.IOSApplication.Delegate;
-import com.badlogic.gdx.backends.iosrobovm.IOSApplicationConfiguration;
-import com.badlogic.gdx.utils.Logger;
-import org.robovm.pods.google.mobileads.*;
+import org.robovm.pods.google.mobileads.GADAdSize;
+import org.robovm.pods.google.mobileads.GADBannerView;
+import org.robovm.pods.google.mobileads.GADBannerViewDelegateAdapter;
+import org.robovm.pods.google.mobileads.GADInterstitial;
+import org.robovm.pods.google.mobileads.GADRequest;
+import org.robovm.pods.google.mobileads.GADRequestError;
 
 public class IOSLauncher extends Delegate implements IActivityRequestHandler{
     private static final Logger log = new Logger(IOSLauncher.class.getName(), Application.LOG_DEBUG);
@@ -104,6 +109,11 @@ public class IOSLauncher extends Delegate implements IActivityRequestHandler{
            }else{
                log.debug("Interstitial Ad not ready");
         }
+    }
+
+    @Override
+    public void showInterstitial(Runnable then) {
+
     }
 
     @Override
